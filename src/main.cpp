@@ -1,8 +1,5 @@
 #include "Graph.h"
-<<<<<<< HEAD
-=======
 #include "hash_map.h"
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
@@ -17,9 +14,7 @@ void writeCommunity(vector<int>& ntoc){
 
 void writeCommunity(vector<vector<int> >& community){
 	int i = 0;
-<<<<<<< HEAD
 	for(vector<vector<int> >::iterator it = community.begin(); it != community.end(); it++, i++){
-=======
 	int max_community_size=-1;
 	int max_community_id=-1;
 	for(vector<vector<int> >::iterator it = community.begin(); it != community.end(); it++, i++){
@@ -27,17 +22,13 @@ void writeCommunity(vector<vector<int> >& community){
 			max_community_size=int(it->size());
 			max_community_id=i;
 		}
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 		cout<<i<<": ";
 		for(vector<int>::iterator iit = (*it).begin(); iit != (*it).end(); iit++){
 			cout<<*iit<<" ";
 		}
 		cout<<endl;
 	}
-<<<<<<< HEAD
-=======
 	cout<<"Community "<<max_community_id<<" has the biggest size: "<<max_community_size<<endl;
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 }
 
 EdgeWeight getEdgeWeightBetweenVertices(Graph& g, Node i, Node j){ //O(m)
@@ -91,11 +82,8 @@ double modularityGain(Graph& g, Node i, int comm, EdgeWeight comm_weight, vector
 
 //the first phase, stop when some condition reached
 double detectCommunity(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot, float EPSILON, int PASS_NUM){
-<<<<<<< HEAD
 	int max, pass = 0;
-=======
 	int pass = 0;
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 	double gain = 0;
 	double maxgain = 0;
 	double mod = 1;
@@ -109,15 +97,11 @@ double detectCommunity(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot
 		tot[i] = g.getWeightedDegree(i);
 	}
 	do {
-<<<<<<< HEAD
-=======
 		changed=false;
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 		pre_mod = modularity(g, in, tot);
 		pass++;
 		for(Node i = 0; i < g.getNumVertices(); i++){
 			pre_comm = g.getCommunity(i);
-<<<<<<< HEAD
 			for(EdgeList::iterator eit = g.getNeighbors(i).begin(); eit != g.getNeighbors(i).end(); eit++){
 				comm_weight[g.getCommunity((*eit).first)] += (*eit).second;
 				visited.push_back(g.getCommunity((*eit).first));
@@ -137,7 +121,6 @@ double detectCommunity(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot
 			}
 			else{
 				add(g,i,g.getCommunity(max),in,tot);
-=======
 			remove(g,i,in,tot);
 			for(EdgeList::iterator eit = g.getNeighbors(i).begin(); eit != g.getNeighbors(i).end(); eit++){
 				if(i == (*eit).first)continue;
@@ -156,7 +139,6 @@ double detectCommunity(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot
 			add(g,i,max,in,tot);
 			
 			if(max != pre_comm){
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 				changed = true;
 			}
 			gain = 0;
@@ -185,36 +167,30 @@ int constructNewGraph(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot,
 	for(vector<int>::iterator it = ntoc.begin(); it != ntoc.end(); it++){
 		*it = ctoc[*it];
 	}	
-<<<<<<< HEAD
-	EdgeList commEdge[num_comm];
-=======
-	
+
+	EdgeList commEdge[num_comm];	
 	vector<hash_map<int, EdgeWeight> > newGraphEdgeSet (num_comm, hash_map<int, EdgeWeight>());
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 	for(Node i = 0; i < g.getNumVertices(); i++){	
 		v_comm = g.getCommunity(i);
 		for(EdgeList::iterator eit = g.getNeighbors(i).begin(); eit != g.getNeighbors(i).end(); eit++){
 			cur_comm = g.getCommunity((*eit).first);
 			if(cur_comm != v_comm){
-<<<<<<< HEAD
 				commEdge[ctoc[v_comm]].push_back(make_pair(ctoc[cur_comm], (*eit).second));
-=======
 				if(newGraphEdgeSet[ctoc[cur_comm]].find(ctoc[v_comm])==newGraphEdgeSet[ctoc[cur_comm]].end()){
 					newGraphEdgeSet[ctoc[cur_comm]][ctoc[v_comm]]=(*eit).second;
 				}else{
 					newGraphEdgeSet[ctoc[cur_comm]][ctoc[v_comm]]+=(*eit).second;
 				}
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 			}
 		}		
 	}	
+	
 	g.resize(num_comm);
 	for(Node i = 0; i < num_vertices; i++){
 		if(tot[i] > 0){
 			g.setWeightedDegree(ctoc[i], tot[i]);
 			g.setCommunity(ctoc[i], ctoc[i]);
 			g.addEdge(ctoc[i], ctoc[i], in[i]);
-<<<<<<< HEAD
 		}
 	}	
 	for(int i = 0; i < num_comm; i++){
@@ -222,7 +198,6 @@ int constructNewGraph(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot,
 			g.addEdge(i, (*it).first, (*it).second);
 		}
 	}	
-=======
 			
 			//Here is an attempt to add no self edge
 			//g.setWeightedDegree(ctoc[i], tot[i]-in[i]);
@@ -236,7 +211,6 @@ int constructNewGraph(Graph& g, vector<EdgeWeight>& in, vector<EdgeWeight>& tot,
 		}
 	}
 	g.writeGraph();
->>>>>>> a93bd7bc31a700c2d7a54a5d49089d1985a396e2
 	return num_comm;
 }
 
